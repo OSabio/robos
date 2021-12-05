@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import CardList from './CardList';
-import SearchBox from './SearchBox';
+import CardList from '../components/CardList';
+import SearchBox from '../components/SearchBox';
 //aqui, robots é importado com {} pois o arquivo 'robot.js' pode exportar mais de um componente
 //import { robots } from './robots';
 import './App.css'
-import Scroll from './Scroll.js'
+import Scroll from '../components/Scroll.js'
 
 //Utilizamos class para poder manipular dados dos filhos atraves da tag .this
 class App extends Component {
@@ -38,31 +38,30 @@ class App extends Component {
     }
 
     render() {
+        const { robots, searchField } = this.state;
+
         //o método .filter() cria um array com todos os elementos que passaram no teste implementado pela função fornecida, nesse caso a função é a robot
-        const filteredRobots = this.state.robots.filter(robot => {
+        const filteredRobots = robots.filter(robot => {
 
             //toLowerCase() é um método que todas as strings possuem e que transforma todas as palavras em lower case
             //includes() é um metodo que determina se uma array (string nesse caso) contém algum elemento, retorna true ou false
-            return robot.name.toLowerCase().includes(this.state.searchField.toLowerCase());
+            return robot.name.toLowerCase().includes(searchField.toLowerCase());
         })
 
-        if (this.state.robots.length === 0){
-            return <h1>Loading</h1>
-        }
-        else{
-            return (
-                <div className='tc'>
-                    <h1 className='f1'>RoboFriends</h1>
-                    <SearchBox searchChange={this.onSearchChange}/>
-                    <Scroll>             
-                        <CardList robots={filteredRobots} />
-                    </Scroll>
-                </div>
-            );
+        return !robots.length ?
+        <h1>Loading</h1> :
+        (
+            <div className='tc'>
+                <h1 className='f1'>RoboFriends</h1>
+                <SearchBox searchChange={this.onSearchChange}/>
+                <Scroll>             
+                    <CardList robots={filteredRobots} />
+                </Scroll>
+            </div>
+        );
 
-        }
+    }
         
-    } 
 }
 
 export default App;
